@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 
 from data import db_session
 from data.users import User
+from data.blogs import Blog
 
 db_session.global_init("db/blogs.db")
 
@@ -66,8 +67,9 @@ def reqister():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
-        db_sess = db_session.create_session()
-        if db_sess.query(User).filter(User.email == form.email.data).first():
+        db_sess1 = db_session.create_session()
+        if (db_sess1.query(User).filter(User.email == form.email.data).first() or
+                db_sess1.query(User).filter(User.name == form.name.data).first()):
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть")
@@ -103,6 +105,29 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/')
+@app.route('/index')
+def index():
+    form =
+    return render_template('index.html', title='Блоги', form=form)
+
+
+@app.route('/<path:n>')
+def index(n):
+    n = n.split("/")
+    db_sess1 = db_session.create_session()
+    user = db_sess1.query(User).filter(User.name == n[1]).first()
+    if user:
+        if len(n) == 1:
+            form =
+            return render_template('user.html', title=n[1], form=form)
+        else:
+            blog = db_sess1.query(Blog).filter(Blog.tutle == n[2]).first()
+            if blog and blog.user == user:
+                form =
+                return render_template('blog.html', title=n[1], form=form)
 
 
 if __name__ == '__main__':
