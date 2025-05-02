@@ -18,4 +18,4 @@ class Blog(SqlAlchemyBase):
                                 sqlalchemy.ForeignKey("users.id"))
     user = orm.relationship('User')
 
-    likes = orm.relationship("User", back_populates="liked_posts")
+    likes = orm.relationship("Like", back_populates="blog")

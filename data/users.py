@@ -19,7 +19,7 @@ class User(SqlAlchemyBase, UserMixin):
                                      default=datetime.datetime.now)
     blogs = sqlalchemy.orm.relationship("Blog", back_populates='user')
 
-    liked_posts = sqlalchemy.orm.relationship("Blog", back_populates="likes")
+    liked_posts = sqlalchemy.orm.relationship("Like", back_populates="user")
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
