@@ -8,6 +8,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 from data import db_session
 from data.users import User
 from data.blogs import Blog
+from data.likes import Like
 
 db_session.global_init("db/blogs.db")
 
@@ -51,6 +52,11 @@ class RegisterForm(FlaskForm):
     name = StringField('Имя пользователя', validators=[DataRequired()])
     about = TextAreaField("Немного о себе")
     submit = SubmitField('Войти')
+
+
+class UserForm(FlaskForm):
+    blog = StringField('Название блога', validators=[DataRequired()])
+    submit = SubmitField('Новый блог')
 
 
 @login_manager.user_loader
@@ -114,15 +120,15 @@ def index():
     return render_template('index.html', title='Блоги', form=form)
 
 
-@app.route('/<path:n>')
-def index(n):
+@app.route('/<path:n>', methods=['GET', 'POST'])
+def user(n):
     n = n.split("/")
     db_sess1 = db_session.create_session()
     user = db_sess1.query(User).filter(User.name == n[1]).first()
     if user:
         if len(n) == 1:
-            form =
-            return render_template('user.html', title=n[1], form=form)
+            form = UserForm()
+            return render_template('user.html', title=n[1], name=n[1], your_page=, form=form)
         else:
             blog = db_sess1.query(Blog).filter(Blog.tutle == n[2]).first()
             if blog and blog.user == user:

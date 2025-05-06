@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if {{your_page}} %}
+        <div>
+            Это ваш профиль
+        </div>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.blog.label }}<br>
+                {{ form.blog.label }}<br>
+                {{ form.blog(class="form-control") }}<br>
+                {% for error in form.blog.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+            {{message}}
+        </form>
+    {% else %}
+        <div>
+            Профиль {{name}}<br>
+        </div>
+        <form action="/" target="_blank">
+            <button>Ваш профиль</button>
+        </form>
+    {% endif %}
+{% endblock %}
