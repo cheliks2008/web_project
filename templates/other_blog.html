@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a class="btn btn-primary " href="/{{cur_user.name}}">Ваш профиль</a>
+    <h1>
+        blog.tutle
+    </h1>
+    <form action="" method="post">
+        <div class="col-md6 border rounded">
+            <div>
+                {{blog.content}}
+            </div>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </div>
+    </form>
+{% endblock %}

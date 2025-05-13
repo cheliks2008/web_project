@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if {{your_page}} %}
-        <div>
+    {% if cur_user == user %}
+        <h1>
             Это ваш профиль
-        </div>
+        </h1>
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <p>
-                {{ form.blog.label }}<br>
                 {{ form.blog.label }}<br>
                 {{ form.blog(class="form-control") }}<br>
                 {% for error in form.blog.errors %}
@@ -19,13 +18,35 @@
             </p>
             <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
             {{message}}
+            {% for blog in user.blogs %}
+                <div class="col-md6 border rounded">
+                    <h2>{{blog.title}}</h2>
+                    <div class=".truncate">
+                        {{blog.content}}
+                    </div>
+                    <div>
+                        Дата написания - {{blog.created_date}}
+                    </div>
+                    <a class="btn btn-primary " href="/{{blog.title}}">Изменить</a>
+                </div>
+            {% endfor %}
         </form>
     {% else %}
-        <div>
-            Профиль {{name}}<br>
-        </div>
-        <form action="/" target="_blank">
-            <button>Ваш профиль</button>
-        </form>
+        <a class="btn btn-primary " href="/{{cur_user.name}}">Ваш профиль</a>
+        <h1>
+            Профиль {{user.name}}<br>
+        </h1>
+        {% for blog in user.blogs %}
+            <div class="col-md6 border rounded">
+                <h2>{{blog.title}}</h2>
+                <div class=".truncate">
+                    {{blog.content}}
+                </div>
+                <div>
+                    Дата написания - {{blog.created_date}}
+                </div>
+                <a class="btn btn-primary " href="/{{blog.title}}">Просмотр блога</a>
+            </div>
+        {% endfor %}
     {% endif %}
 {% endblock %}
